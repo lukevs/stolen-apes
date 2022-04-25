@@ -14,14 +14,15 @@ def is_stolen(asset_contract_address: str, token_id: int) -> str:
         url, headers={"X-API-KEY": OPENSEA_API_KEY},
     )
 
-    # supports_wyvern is false if stolen
-    return not response.json()["supports_wyvern"]
+    data = response.json()
+
+    return not (data.get("success", True) and data.get("supports_wyvern", True))
 
 
 def main():
     total_stolen = 0
 
-    with open("stolen.txt", "w") as stolen_file:
+    with open("stolen.txt", "a") as stolen_file:
         for token_id in range(1, 10001):
             message = "not stolen"
 
