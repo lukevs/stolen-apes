@@ -9,6 +9,11 @@ Install dependencies
 poetry install
 ```
 
+Set an envrionment variable for an OpenSea API key
+```
+export OPENSEA_API_KEY="adfjlksadjsdlk"
+```
+
 Run the script
 ```
 poetry run python main.py
