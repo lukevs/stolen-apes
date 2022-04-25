@@ -1,3 +1,4 @@
+import json
 import os
 from time import sleep
 
@@ -18,14 +19,23 @@ def is_stolen(asset_contract_address: str, token_id: int) -> str:
 
 
 def main():
-    for token_id in range(1, 11):
-        stolen_message = (
-            "stolen" if is_stolen(BAYC_CONTRACT_ADDRESS, token_id)
-            else "not stolen"
-        )
+    stolen_token_ids = []
 
-        print(f"{token_id} is {stolen_message}")
-        sleep(1)
+    for token_id in range(1, 10001):
+        message = "not stolen"
+
+        if is_stolen(BAYC_CONTRACT_ADDRESS, token_id):
+            message = "stolen"
+            stolen_token_ids.append(token_id)
+        
+        print(f"{token_id} - {message}")
+
+        # rate limit
+        sleep(0.1)
+
+    print(f"Total stolen: {len(stolen_token_ids)}")
+    with open("stolen.txt", "w") as stolen_file:
+        stolen_file.write("\n".join(map(str, stolen_token_ids)))
 
 
 if __name__ == "__main__":
